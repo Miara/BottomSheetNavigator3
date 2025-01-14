@@ -49,6 +49,7 @@ fun ModalBottomSheetLayout(
     dragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
     properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties,
+    onDismiss: () -> Unit,
     content: @Composable () -> Unit,
 ) {
 
@@ -62,7 +63,10 @@ fun ModalBottomSheetLayout(
 
     if (bottomSheetNavigator.sheetEnabled) {
         ModalBottomSheet(
-            onDismissRequest = bottomSheetNavigator.onDismissRequest,
+            onDismissRequest = {
+                onDismiss()
+                bottomSheetNavigator.onDismissRequest()
+            },
             sheetState = bottomSheetNavigator.sheetState,
             content = {
                 CompositionLocalProvider(
